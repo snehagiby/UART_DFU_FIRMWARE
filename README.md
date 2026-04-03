@@ -38,3 +38,22 @@ This project implements UART bootloader upgrade mechanism based on embedded syst
 ## Debugging Technique 
 -Run the code in Debug mode, Pause and check the address on the left side of debugger(it should be in the SYSTEM Memory address range 0x1FFF0000 - 0x1FFF7A0F)
 ![alt text](image.png)
+
+## Details on Design
+-32 bit Magic word written at the end address of SRAM starting from 0x2001FFFC.
+-declared last 4 bytes of RAM in linker file as noninit bytes,otherwise it will not retain the magic value.
+MEMORY
+{
+  RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 128K-32
+  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 512K
+  MAGIC_RAM(rwx)	: ORIGIN = 0x2001FFFC, LENGTH = 32
+}
+
+add below assembly code before .data 
+   .noinit (NOLOAD) :
+  {
+    . = ALIGN(4);
+    *(.noinit)
+    *(.noinit*)
+    . = ALIGN(4);
+  } > MAGIC_RAM    
