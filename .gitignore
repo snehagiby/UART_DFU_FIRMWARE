@@ -1,0 +1,19 @@
+# STM32 build outputs
+**/Debug/
+**/Release/
+
+# Compiled binaries
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+
+# Eclipse / STM32CubeIDE files
+.settings/
+.cproject
+.project
+
+# Editor swap files
+*.swp
+``
